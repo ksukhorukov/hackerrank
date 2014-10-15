@@ -1,3 +1,0 @@
-1) generate an alpgabet  ("A".."Z").each { |letter| p letter.upcase }
-2) exclude the letters from the secret word from the alphabet
-
