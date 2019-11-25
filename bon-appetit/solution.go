@@ -9,55 +9,53 @@ import (
     "strings"
 )
 
-// Complete the bonAppetit function below.
-func bonAppetit(bill []int32, k int32, b int32) {
-    var total int32
-    var fair_share int32
-
-    for id, val := range bill {
-        if id != int(k) {
-            total += val
-        }
+// Complete the sockMerchant function below.
+func sockMerchant(n int32, ar []int32) int32 {
+    socks_frequency := make(map[int32]int32)
+    
+    for i := 0; i < len(ar); i++ {
+        socks_frequency[int32(ar[i])]++
     }
 
-    fair_share = total / 2
+    var counter int
 
-    if b != fair_share {
-        fmt.Println(b - fair_share)
-    } else {
-        fmt.Println("Bon Appetit")
+    for _, val := range(socks_frequency) {
+        counter += int(val) / 2
     }
+ 
+    return int32(counter)
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+    reader := bufio.NewReaderSize(os.Stdin, 1024 * 1024)
 
-    nk := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+    checkError(err)
 
-    nTemp, err := strconv.ParseInt(nk[0], 10, 64)
+    defer stdout.Close()
+
+    writer := bufio.NewWriterSize(stdout, 1024 * 1024)
+
+    nTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
     checkError(err)
     n := int32(nTemp)
 
-    kTemp, err := strconv.ParseInt(nk[1], 10, 64)
-    checkError(err)
-    k := int32(kTemp)
+    arTemp := strings.Split(readLine(reader), " ")
 
-    billTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
-
-    var bill []int32
+    var ar []int32
 
     for i := 0; i < int(n); i++ {
-        billItemTemp, err := strconv.ParseInt(billTemp[i], 10, 64)
+        arItemTemp, err := strconv.ParseInt(arTemp[i], 10, 64)
         checkError(err)
-        billItem := int32(billItemTemp)
-        bill = append(bill, billItem)
+        arItem := int32(arItemTemp)
+        ar = append(ar, arItem)
     }
 
-    bTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-    checkError(err)
-    b := int32(bTemp)
+    result := sockMerchant(n, ar)
 
-    bonAppetit(bill, k, b)
+    fmt.Fprintf(writer, "%d\n", result)
+
+    writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
