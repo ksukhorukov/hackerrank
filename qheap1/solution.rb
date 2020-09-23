@@ -4,21 +4,25 @@ require 'set'
 
 class Heap
 	attr_accessor :heap
+	attr_accessor :minimum
 
 	def initialize
 		@heap = ::Set.new
+		@minimum = Float::INFINITY
 	end
 
 	def add(elem)
-		@heap << elem
+		@heap.add elem
+		@minimum = elem if minimum > elem
 	end
 
 	def delete(elem)
 		@heap.delete elem
+		@minimum = @heap.min
 	end
 
 	def min
-		puts heap.min
+		puts minimum
 	end
 end
 
